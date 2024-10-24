@@ -1,28 +1,35 @@
-package com.pluralsight;
+import java.util.ArrayList;
 
 public class Hand {
     private ArrayList<Card> cards;
-    public Hand(){
+
+    public Hand() {
         cards = new ArrayList<>();
     }
-    // A Card is dealt to the com.pluralsight.Hand and the com.pluralsight.Hand is responsible
-// to store the card
-    public void Deal(Card card){
-        cards.add(card);
+
+    public void deal(Card card) {
+        cards.add(card);  // Add a card to the hand
     }
-    public int getSize(){
-        return cards.size();
-    }
-    // The com.pluralsight.Hand uses the methods of each card to determine
-// the value of each card - and adds up all values
-    public int getValue(){
+
+    public int getValue() {
         int value = 0;
-        for(Card card: cards){
-            card.flip(); // turn the card over to see the value
-            value += card.getPointValue();
-            card.flip(); // hide the card again
+        int aceCount = 0;
+        for (Card card : cards) {
+            int cardValue = card.getPointValue();
+            value += cardValue;
+            if (cardValue == 11) {
+                aceCount++;  // Count the number of aces
+            }
+        }
+        // Adjust Ace value from 11 to 1 if necessary
+        while (value > 21 && aceCount > 0) {
+            value -= 10;  // Count Ace as 1 instead of 11
+            aceCount--;
         }
         return value;
     }
-}
 
+    public int getSize() {
+        return cards.size();  // Returns the number of cards in the hand
+    }
+}
